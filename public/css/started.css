@@ -1,0 +1,32 @@
+body {
+  padding-top: 40px;
+  /*background: #ffffff;*/
+  background: #f2f2f2;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+table {
+  text-align: left;
+}
+
+div.thumbnail img {
+  max-height: 200px;
+}
+div.form-inline form{
+  display: inline;
+}
+
+#googlemap{
+  width: 330px;
+}
+
+@media screen and (max-width: 800px) { 
+  #googlemap{
+    width: 330px;
+  }
+}
+ 
