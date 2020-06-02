@@ -43,6 +43,13 @@ class ProductController extends Controller
         $path = $request->file('image')->store('products');
         $params = $request->all();
         $params['image'] = $path;
+
+        $path = $request->file('slide1')->store('products');
+        $params['slide1'] = $path;
+
+        $path = $request->file('slide2')->store('products');
+        $params['slide2'] = $path;
+
         Product::create($params);
         return redirect()->route('products.index');
     }
@@ -83,9 +90,24 @@ class ProductController extends Controller
         unset($params['image']);
         if($request->has('image')){
             Storage::delete($product->image);
-            $path = $request->file('image')->store('categories');
+            $path = $request->file('image')->store('products');
             $params['image'] = $path;
         }
+
+        unset($params['slide1']);
+        if($request->has('slide1')){
+            Storage::delete($product->slide1);
+            $path = $request->file('slide1')->store('products');
+            $params['slide1'] = $path;
+        }
+
+        unset($params['slide2']);
+        if($request->has('slide2')){
+            Storage::delete($product->slide2);
+            $path = $request->file('slide2')->store('products');
+            $params['slide2'] = $path;
+        }
+
         $product->update($params);  
         
         return redirect()->route('products.index');

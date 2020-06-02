@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-md-18">
-        <h1>Заказы</h1>
+        <h1>@lang('basket.orders')</h1>
         <table class="table">
             <tbody>
             <tr>
@@ -10,21 +10,22 @@
                     #
                 </th>
                 <th>
-                    Имя
+                    @lang('basket.data.name')
                 </th>
                 <th>
-                    Телефон
+                    @lang('basket.data.phone')
                 </th>
                 <th>
-                    Когда отправлен
+                    @lang('basket.data.departure_date')
                 </th>
                 <th>
-                    Сумма
+                    @lang('basket.data.amount')
                 </th>
                 <th>
-                    Действия
+                    @lang('basket.data.actions')
                 </th>
             </tr>
+            <?php  //dd($orders); ?>
             @foreach($orders as $order)
             <tr>
                 <td>{{ $order->id}}</td>

@@ -6,12 +6,20 @@ use App\Category;
 use App\Product;
 use App\Message;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\App;
 
 class MainController extends Controller
 {
     public function index(Request $request){
         $productsQuery = Product::with('category');
+
+        if ($request->filled('price_to') && $request->filled('price_from')){
+            if($request->price_from > $request->price_to){
+                session()->flash('warning', __('main.priceError'));
+                $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
+                return view('index', compact('products'));
+            }
+        }
 
         if ($request->filled('price_from')) {
             $productsQuery->where('price', '>=', $request->price_from);
@@ -22,11 +30,11 @@ class MainController extends Controller
         }
 
         $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
+        
         return view('index', compact('products'));
     }
 
     public function categories() {
-
         $categories = Category::get();
         return view('categories', compact('categories')); 
     }
@@ -36,9 +44,9 @@ class MainController extends Controller
         $message = new Message;
         $result = $message->saveMessage($request->name, $request->message, $request->phone);
         if($result){
-            session()->flash('success', 'Ваша заявка принята в обработку.');
+            session()->flash('success', __('main.confirm'));
         }
-        else  session()->flash('warning', 'Произошла ошибка.');
+        else  session()->flash('warning', __('main.error'));
         return redirect()->route('index'); 
     }
 
@@ -60,7 +68,7 @@ class MainController extends Controller
 
     public function product($category, $productCode = null) {
         //images - массив фоток
-        //render instead return
+        
         $product = Product::where('code', $productCode)->first();
         return view('sliderproduct', compact('product'), ['product' => $productCode] );
     } 
@@ -69,5 +77,16 @@ class MainController extends Controller
         $category = Category::where('code', $code)->first();
         $products = Product::get();
         return view('category', compact('category', 'products')); 
+    }
+
+    public function changeLocale($locale)
+    {
+        $availableLocales = ['ru', 'en'];
+        if (!in_array($locale, $availableLocales)) {
+            $locale = config('app.locale');
+        }
+        session(['locale' => $locale]);
+        App::setLocale($locale);
+        return redirect()->back();
     }
 }

@@ -1,19 +1,16 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'failed' => 'Электронная почта или пароль введены неверно.',
+    'failed' => 'Email or password was endtered wrong.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'back' => 'Back to the site',
+    'login' => 'Login',
+    'logout' => 'Logout',
+    'register' => 'Registration',
+    'email' => 'E-mail',
+    'password' => 'Password',
+    'auth' => 'Authorization',
+    'registration' => 'Registration',
+    'name' => 'Name',
+    'confirm_pass' => 'Confirm password' 
 ];

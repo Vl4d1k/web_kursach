@@ -13,7 +13,9 @@ class Message extends Model
     $this->name = $name;
     $this->description = $description;
     $this->phone = $phone;
-    if($this->save()) return true;
-    else return false;
+    if($this->save()) 
+      return true;
+    else 
+      return false;
     }
 }

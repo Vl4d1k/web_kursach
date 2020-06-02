@@ -1,12 +1,12 @@
 @extends('master')
 
-@section('title', 'Контакты')
+@section('title', __('main.contacts'))
 
 @section('content')
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <div id="social-platforms">
-    <h1>Наши контакты</h1>
+    <h1>@lang('about.contacts')</h1>
     <a class="btn btn-icon btn-facebook" href="#"><i class="fa fa-facebook"></i><span>Facebook</span></a>
     <a class="btn btn-icon btn-twitter" href="#"><i class="fa fa-twitter"></i><span>Twitter</span></a>
     <a class="btn btn-icon btn-googleplus" href="#"><i class="fa fa-google-plus"></i><span>Google+</span></a>

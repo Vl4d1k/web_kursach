@@ -8,7 +8,7 @@ use App\Order;
 class OrderController extends Controller
 {
     public function index(){
-        $orders = Order::where('status', 1)->paginate(3);
+        $orders = Order::active()->paginate(3);
         return view('auth.orders.index', compact('orders'));
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Order;
 use App\User;
@@ -11,7 +10,7 @@ class PersonOrderController extends Controller
 {
     public function index()
     {
-        $orders = Auth::user()->orders()->where('status', 1)->get();
+        $orders = Auth::user()->orders()->active()->paginate(3);
         return view('auth.orders.index', compact('orders'));
     }
 

@@ -1,18 +1,18 @@
 @extends('master')
 
-@section('title', 'Корзина')
+@section('title', __('main.cart'))
 
 @section('content')
-<h1>Корзина</h1>
-<p>Оформление заказа</p>
+<h1>@lang('basket.cart')</h1>
+<p>@lang('basket.ordering')</p>
 <div class="panel">
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Название</th>
-        <th>Кол-во</th>
-        <th>Цена</th>
-        <th>Стоимость</th>
+        <th>@lang('basket.name')</th>
+        <th>@lang('basket.count')</th>
+        <th>@lang('basket.price')</th>
+        <th>@lang('basket.cost')</th>
       </tr>
     </thead>
     <tbody>
@@ -21,13 +21,13 @@
         <td>
           <a href="{{route('product', [$product->category->code, $product->code])}}">
             <img height="56px" src="{{Storage::url($product->image)}}">
-            {{$product->name}}
+            {{$product->__('name')}}
           </a>
         </td>
         <td>
-          <form action="{{ route('basket-input', $product) }}" method="POST">
-            <div class="col-xs-2">
-              <input class="form-control" id="kolvo" type="text" value="{{$product->pivot->count}}">
+          <form action="{{ route('basket-input', $product, ) }}" method="POST">
+            <div class="col-md-4">
+              <input class="form-control" id="kolvo" name="kolvo" type="text" value="{{$product->pivot->count}}">
             </div>
             @csrf
           </form>
@@ -40,22 +40,22 @@
               <button type="submit" class="btn btn-success" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
               @csrf
             </form>
-
           </div>
         </td>
-        <td>{{$product->price}} руб.</td>
-        <td>{{$product->getPriceForCount()}} руб.</td>
+        <td>{{$product->price}} @lang('basket.rub')</td>
+        <td>{{$product->getPriceForCount()}} @lang('basket.rub').</td>
       </tr>
       @endforeach
       <tr>
-        <td colspan="3">Общая стоимость:</td>
-        <td>{{$order->getFullPrice()}} руб.</td>
+        <td colspan="3">@lang('basket.full_cost'):</td>
+        <td>{{$order->getFullPrice()}} @lang('basket.rub')</td>
       </tr>
     </tbody>
   </table>
   <br>
   <div class="btn-group pull-right" role="group">
-    <a type="button" class="btn btn-success" href="/kursach/public/basket/place">Оформить заказ</a>
+    <br>
+    <a type="button" class="btn btn-success" href="/kursach/public/basket/place">@lang('basket.place_order')</a>
   </div>
 </div>
 @endsection

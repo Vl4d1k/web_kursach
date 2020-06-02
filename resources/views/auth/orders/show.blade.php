@@ -7,18 +7,18 @@
         <div class="container">
             <div class="justify-content-center">
                 <div class="panel">
-                    <h1>Заказ №{{ $order->id }}</h1>
-                    <p>Заказчик: <b>{{ $order->name }}</b></p>
-                    <p>Способ доставки: <b>{{ $order->delivery }}</b></p>
-                    <p>Способ оплаты: <b>{{ $order->payment }}</b></p>
-                    <p>Номер теелфона: <b>{{ $order->phone }}</b></p>
+                    <h1>@lang('basket.order') №{{ $order->id }}</h1>
+                    <p>@lang('basket.customer'): <b>{{ $order->name }}</b></p>
+                    <p>@lang('basket.delivery'): <b>{{ $order->delivery }}</b></p>
+                    <p>@lang('basket.payment'): <b>{{ $order->payment }}</b></p>
+                    <p>@lang('basket.data.phone'): <b>{{ $order->phone }}</b></p>
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>Название</th>
-                            <th>Кол-во</th>
-                            <th>Цена</th>
-                            <th>Стоимость</th>
+                            <th>@lang('basket.data.name')</th>
+                            <th>@lang('basket.count')</th>
+                            <th>@lang('basket.price')</th>
+                            <th>@lang('basket.full_cost')</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -32,13 +32,13 @@
                                     </a>
                                 </td>
                                 <td><span class="badge">1</span></td>
-                                <td>{{ $product->price }} руб.</td>
-                                <td>{{ $product->getPriceForCount()}} руб.</td>
+                                <td>{{ $product->price }} @lang('basket.rub').</td>
+                                <td>{{ $product->getPriceForCount()}} @lang('basket.rub').</td>
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="3">Общая стоимость:</td>
-                            <td>{{ $order->getFullPrice() }} руб.</td>
+                            <td colspan="3">@lang('basket.total'):</td>
+                            <td>{{ $order->getFullPrice() }} @lang('basket.rub').</td>
                         </tr>
                         </tbody>
                     </table>
