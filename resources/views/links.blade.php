@@ -9,14 +9,14 @@
     <h1>@lang('about.contacts')</h1>
     <a class="btn btn-icon btn-facebook" href="#"><i class="fa fa-facebook"></i><span>Facebook</span></a>
     <a class="btn btn-icon btn-twitter" href="#"><i class="fa fa-twitter"></i><span>Twitter</span></a>
-    <a class="btn btn-icon btn-googleplus" href="#"><i class="fa fa-google-plus"></i><span>Google+</span></a>
+    <a class="btn btn-icon btn-googleplus" href="#"><i class="fa fa-google-plus"></i><span>Google</span></a>
   </div>
   
   <style>
+  
     @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
     @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
 
-    
     html {font-family: 'Roboto', sans-serif;font-size:16px;line-height:1em;height:100%;}
     body {
       background: #ffffff;

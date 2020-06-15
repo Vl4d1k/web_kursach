@@ -6,6 +6,7 @@ use App\Category;
 use App\Product;
 use App\Message;
 use Illuminate\Http\Request;
+use App\Http\Requests\FeedbackRequest;
 use Illuminate\Support\Facades\App;
 
 class MainController extends Controller
@@ -30,7 +31,7 @@ class MainController extends Controller
         }
 
         $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
-        
+
         return view('index', compact('products'));
     }
 
@@ -39,7 +40,7 @@ class MainController extends Controller
         return view('categories', compact('categories')); 
     }
 
-    public function contactConfirm(Request $request)
+    public function contactConfirm(FeedbackRequest $request)
     {
         $message = new Message;
         $result = $message->saveMessage($request->name, $request->message, $request->phone);
@@ -67,8 +68,6 @@ class MainController extends Controller
     }
 
     public function product($category, $productCode = null) {
-        //images - массив фоток
-        
         $product = Product::where('code', $productCode)->first();
         return view('sliderproduct', compact('product'), ['product' => $productCode] );
     } 

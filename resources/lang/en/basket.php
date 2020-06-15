@@ -44,7 +44,7 @@ return [
     'customer' => 'Customer',
 
     
-
+    'open' => 'Open',
     'payment' => 'Payment', 
     'delivery' => 'Delivery', 
     'error' => 'Something is going wrong!',

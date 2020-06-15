@@ -55,7 +55,7 @@
   <br>
   <div class="btn-group pull-right" role="group">
     <br>
-    <a type="button" class="btn btn-success" href="/kursach/public/basket/place">@lang('basket.place_order')</a>
+    <a type="button" class="btn btn-success" href="{{route('basket-place')}}">@lang('basket.place_order')</a>
   </div>
 </div>
 @endsection

@@ -4,6 +4,7 @@ return [
     'online_shop' => 'Интернет Магазин',
     'all_products' => 'Все товары',
     'product' => 'Товар',
+    'siteMap' => 'Карта Сайта',
     'main_page' => 'Главаная страница',
     'categories' => 'Категории',
     'all_categories' => 'Все Категории',

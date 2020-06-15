@@ -2,6 +2,7 @@
 
 return [
     'online_shop' => 'Online Shop',
+    'siteMap' => 'Site Map',
     'all_products' => 'All products',
     'product' => 'Product',
     'main_page' => 'Main Page',

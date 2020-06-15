@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['set_locale'])->group(function () {
+
   Route::group([
     'prefix' => 'about'
   ], function () {
@@ -23,9 +24,7 @@ Route::middleware(['set_locale'])->group(function () {
     'verify' => false,
   ]);
   
-  Route::get('/logout','Auth\LoginController@logout')->name('get-logout'); 
-  
-  
+  Route::get('/logout','Auth\LoginController@logout')->name('get-logout');  
   
   Route::middleware(['auth'])->group(function () {
     Route::group([
@@ -50,15 +49,11 @@ Route::middleware(['set_locale'])->group(function () {
     Route::resource('products', 'ProductController');
   });
   
-  
   Route::get('/', 'MainController@index')->name('index');
   
   Route::get('/categories', 'MainController@categories')->name('categories');
   
   Route::post('basket/add/{id}', 'BasketController@basketAdd')->name('basket-add');
-  
-  
-  
   
   Route::group([
     'middleware' => 'basket_not_empty',

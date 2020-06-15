@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="col-md-18">
-        <h1>Заказы</h1>
+        <h1>Обращения</h1>
         <table class="table">
             <tbody>
             <tr>

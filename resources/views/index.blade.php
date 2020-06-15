@@ -8,7 +8,7 @@
 <script src="\kursach\resources\js\onlyDigitsInInput.js"></script>
 <form method="GET" action="{{route("index")}}">
   <div class="filters row">
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-4 col-md-4">
       <label for="price_from">@lang('main.price_from')
         <input type="text" name="price_from" id="price_from" size="6" onkeypress='onlyDigits(event)' value="{{ request()->price_from}}">
       </label>

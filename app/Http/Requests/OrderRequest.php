@@ -32,7 +32,7 @@ class OrderRequest extends FormRequest
 
         return $rules;
     }
-
+    /*
     public function messages()
     {
         return [
@@ -44,4 +44,5 @@ class OrderRequest extends FormRequest
             'max' => 'Поле :attribute должно содержать максимум :max символов.'
         ];
     }
+    */
 }
