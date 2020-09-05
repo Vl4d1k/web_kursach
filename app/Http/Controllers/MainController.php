@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Product;
 use App\Message;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Requests\FeedbackRequest;
+use App\Wishlist;
 use Illuminate\Support\Facades\App;
 
 class MainController extends Controller
 {
     public function index(Request $request){
+        //get all products
         $productsQuery = Product::with('category');
 
         if ($request->filled('price_to') && $request->filled('price_from')){
@@ -31,8 +34,23 @@ class MainController extends Controller
         }
 
         $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
+        
+        //get curent order
+        $orderId = session('orderId');
+        if (is_null($orderId)) {
+            $order = null;
+        }
+        else $order = Order::find($orderId);
 
-        return view('index', compact('products'));
+        //get wishlist
+        $wishListId = session('wishListId');
+        if (is_null($wishListId)) {
+            $wishList = null;
+        } else {
+            $wishList = Wishlist::findOrFail($wishListId);
+        }
+
+        return view('index', compact('products', 'order', 'wishList'));
     }
 
     public function categories() {
@@ -69,7 +87,21 @@ class MainController extends Controller
 
     public function product($category, $productCode = null) {
         $product = Product::where('code', $productCode)->first();
-        return view('sliderproduct', compact('product'), ['product' => $productCode] );
+        //get curent order
+        $orderId = session('orderId');
+        if (is_null($orderId)) {
+            $order = null;
+        }
+        else $order = Order::find($orderId);
+
+        //get wishlist
+        $wishListId = session('wishListId');
+        if (is_null($wishListId)) {
+            $wishList = null;
+        } else {
+            $wishList = Wishlist::findOrFail($wishListId);
+        }
+        return view('product', compact('product','wishList', 'order'), ['product' => $productCode] );
     } 
 
     public function category($code) {
@@ -87,5 +119,48 @@ class MainController extends Controller
         session(['locale' => $locale]);
         App::setLocale($locale);
         return redirect()->back();
+    }
+
+    public function wishListAdd($productId)
+    {
+        $wishListId = session('wishListId');
+
+        if (is_null($wishListId)) {
+            $wishList = Wishlist::create();
+            session(['wishListId' => $wishList->id]);
+        } else {
+            $wishList = Wishlist::find($wishListId);
+        }
+
+        $product = Product::find($productId);
+
+        //в смежную табличку добавляем в колонки id продукта и id списка желаний
+        if(is_null($wishList->products()->where('wishlist_id', $wishList->id)->where('product_id', $productId)->first())) {
+            $wishList->products()->attach($productId);
+            session()->flash('success', "В избранное добавлен: " . $product->name);
+        } 
+        else {
+            session()->flash('warning', "Товар : " . $product->name . " уже есть в списке желаний.");
+        }
+            
+        return redirect()->route('index');
+    }
+
+    public function wishListRemove($productId)
+    {
+        $wishListId = session('wishListId');
+        if (is_null($wishListId)) {
+            $wishList = Wishlist::create();
+            session(['wishListId' => $wishList->id]);
+        } else {
+            $wishList = Wishlist::find($wishListId);
+        }
+
+        if ($wishList->products->contains($productId)) {
+            $wishList->products()->detach($productId);
+        }
+        $product = Product::find($productId);
+        session()->flash('warning', "Из избранного удаоен товар: ".$product->name);
+        return redirect()->route('index');
     }
 }

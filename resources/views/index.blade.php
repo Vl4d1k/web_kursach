@@ -1,30 +1,121 @@
 @extends('master' )
 
-@section('title', __('main.feedback_page'))
+@section('title', "Главная страница")
 
 @section('content')
-
-<h1>@lang('main.all_products')</h1>
-<script src="\kursach\resources\js\onlyDigitsInInput.js"></script>
-<form method="GET" action="{{route("index")}}">
-  <div class="filters row">
-    <div class="col-sm-4 col-md-4">
-      <label for="price_from">@lang('main.price_from')
-        <input type="text" name="price_from" id="price_from" size="6" onkeypress='onlyDigits(event)' value="{{ request()->price_from}}">
-      </label>
-      <label for="price_to">@lang('main.to')
-        <input type="text" name="price_to" id="price_to" size="6" onkeypress='onlyDigits(event)' value="{{ request()->price_to }}">
-      </label>
-    </div>
-    <div class="col-sm-2 col-md-2">
-      <button type="submit" class="btn btn-primary">@lang('main.filter')</button>
-      <a href="{{ route("index") }}" class="btn btn-warning">@lang('main.reset')</a>
-      <p>
+<nav id="navigation">
+  <div class="container">
+    <div id="responsive-nav">
+      <ul class="main-nav nav navbar-nav">
+        <li class="active"><a href="{{ route("index") }}">Главная страница</a></li>
+        <li><a href="#">Лучшие предложения</a></li>
+        <li><a href="#">Ноутбуки</a></li>
+        <li><a href="#">Телефоны</a></li>
+        <li><a href="#">Умные устройства</a></li>
+        <li><a href="#">Аккумуляторы</a></li>
+        <li><a href="#">Аудио</a></li>
+      </ul>
     </div>
   </div>
-</form>
-@foreach ($products as $product)
-@include('card', compact('product'))
-@endforeach
-{{ $products->links() }}
+</nav>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h3 class="title">Актуальные предложения</h3>
+          <div class="section-nav">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="row">
+          <div class="products-tabs">
+            <div id="tab1" class="tab-pane active">
+              <div class="products-slick" data-nav="#slick-nav-1">
+                @foreach ($products as $product)
+                <div class="product">
+                  <div class="product-img">
+                    <img src="{{Storage::url($product->image)}}" alt="">
+                    <div class="product-label">
+                      {{-- <span class="sale">-30%</span> --}}
+                      {{-- <span class="new">NEW</span> --}}
+                    </div>
+                  </div>
+                  <div class="product-body">
+                    <p class="product-category">{{$product->category->name}}</p>
+                    <h3 class="product-name"><a href="{{ route('product', [$product->category->code, $product->code]) }}">{{$product->name}}</a></h3>
+                    <h4 class="product-price">{{$product->price}} ₽ <del class="product-old-price"> {{$product->price}} ₽</del></h4>
+                    <div class="product-btns">
+                      <form id="form{{$product->id}}" action="{{route('wishlist-add', $product)}}" method="POST"> 
+                        @csrf
+                      </form>
+                      <button onclick="javascript:$('#form{{$product->id}}').submit()" class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">в избранное</span></button>
+                      <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">просмотр</span></button>
+                    </div>
+                  </div>
+                  <form action="{{route('basket-add', $product)}}" method="POST">
+                    <div class="add-to-cart">
+                      <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> добавить в корзину</button>
+                    </div>
+                    @csrf
+                  </form>
+                </div>
+                @endforeach
+              
+              </div>
+              <div id="slick-nav-1" class="products-slick-nav"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="hot-deal" class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hot-deal" id="countdown">
+          <ul class="hot-deal-countdown">
+            <li>
+              <div>
+                <h3 class="days"></h3>
+                <span>Дней</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3 class="hours"></h3>
+                <span>Часов</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3 class="minutes"></h3>
+                <span>Минут</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3 class="seconds"></h3>
+                <span>Секунд</span>
+              </div>
+            </li>
+          </ul>
+          <h2 class="text-uppercase">Лучшее предложение этой недели</h2>
+          <p>Экономьте до 50% </p>
+          <a class="primary-btn cta-btn" href="#">Купить сейчас</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- таймер акции --}}
+<script src="/kursach/resources/js/timer.js"></script>
+
 @endsection

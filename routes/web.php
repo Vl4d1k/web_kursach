@@ -54,7 +54,9 @@ Route::middleware(['set_locale'])->group(function () {
   Route::get('/categories', 'MainController@categories')->name('categories');
   
   Route::post('basket/add/{id}', 'BasketController@basketAdd')->name('basket-add');
-  
+
+  Route::post('wishlist/add/{id}', 'MainController@wishListAdd')->name('wishlist-add');
+  Route::post('wishlist/remote/{id}', 'MainController@wishListRemove')->name('wishlist-remove');
   Route::group([
     'middleware' => 'basket_not_empty',
     'prefix' => 'basket',
