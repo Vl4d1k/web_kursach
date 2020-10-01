@@ -14,25 +14,8 @@ use Illuminate\Support\Facades\App;
 class MainController extends Controller
 {
     public function index(Request $request){
-        //get all products
+        //get 6 products
         $productsQuery = Product::with('category');
-
-        if ($request->filled('price_to') && $request->filled('price_from')){
-            if($request->price_from > $request->price_to){
-                session()->flash('warning', __('main.priceError'));
-                $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
-                return view('index', compact('products'));
-            }
-        }
-
-        if ($request->filled('price_from')) {
-            $productsQuery->where('price', '>=', $request->price_from);
-        }
- 
-        if ($request->filled('price_to')) {
-            $productsQuery->where('price', '<=', $request->price_to);
-        }
-
         $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
         
         //get curent order
@@ -50,8 +33,56 @@ class MainController extends Controller
             $wishList = Wishlist::findOrFail($wishListId);
         }
 
+        //return response()->json($products);
+
         return view('index', compact('products', 'order', 'wishList'));
     }
+
+    public function allProducts(Request $request){
+
+        //get all products
+        $productsQuery = Product::with('category');
+
+        if ($request->filled('price_max') && $request->filled('price_min')){
+            if($request->price_min > $request->price_max){
+                session()->flash('warning', __('main.priceError'));
+                $products = $productsQuery->paginate(8)->withPath("?" . $request->getQueryString());
+                return view('index', compact('products'));
+            }
+        }
+
+        if ($request->filled('price_min')) {
+            $productsQuery->where('price', '>=', $request->price_min);
+        }
+ 
+        if ($request->filled('price_max')) {
+            $productsQuery->where('price', '<=', $request->price_max);
+        }
+
+        $products = $productsQuery->paginate(6)->withPath("?" . $request->getQueryString());
+        
+        //get curent order
+        $orderId = session('orderId');
+        if (is_null($orderId)) {
+            $order = null;
+        }
+        else 
+            $order = Order::find($orderId);
+
+        //get wishlist
+        $wishListId = session('wishListId');
+        if (is_null($wishListId)) {
+            $wishList = null;
+        } else
+            $wishList = Wishlist::findOrFail($wishListId);
+        
+        $categories = Category::all();
+
+        return view('all-products', compact('products', 'order', 'wishList', 'categories'));
+    }
+
+
+
 
     public function categories() {
         $categories = Category::get();

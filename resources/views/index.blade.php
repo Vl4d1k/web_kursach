@@ -8,12 +8,7 @@
     <div id="responsive-nav">
       <ul class="main-nav nav navbar-nav">
         <li class="active"><a href="{{ route("index") }}">Главная страница</a></li>
-        <li><a href="#">Лучшие предложения</a></li>
-        <li><a href="#">Ноутбуки</a></li>
-        <li><a href="#">Телефоны</a></li>
-        <li><a href="#">Умные устройства</a></li>
-        <li><a href="#">Аккумуляторы</a></li>
-        <li><a href="#">Аудио</a></li>
+        <li> <a href="{{route('all-products')}}">Все товары</a> </li>
       </ul>
     </div>
   </div>
@@ -49,10 +44,21 @@
                     <h3 class="product-name"><a href="{{ route('product', [$product->category->code, $product->code]) }}">{{$product->name}}</a></h3>
                     <h4 class="product-price">{{$product->price}} ₽ <del class="product-old-price"> {{$product->price}} ₽</del></h4>
                     <div class="product-btns">
-                      <form id="form{{$product->id}}" action="{{route('wishlist-add', $product)}}" method="POST"> 
+                      <form id="formadd{{$product->id}}" action="{{route('wishlist-add', $product)}}" method="POST"> 
                         @csrf
                       </form>
-                      <button onclick="javascript:$('#form{{$product->id}}').submit()" class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">в избранное</span></button>
+                      <form id="formremove{{$product->id}}" action="{{route('wishlist-remove', $product)}}" method="POST">
+                        @csrf
+                      </form>
+                      @if(isset($wishList))
+                        @if($wishList->products->contains($product))
+                          <button onclick="javascript:$('#formremove{{$product->id}}').submit()" class="add-to-wishlist"><i class="fa fa-heart"></i><span class="tooltipp">удалить</span></button>
+                        @else
+                          <button onclick="javascript:$('#formadd{{$product->id}}').submit()" class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">в избранное</span></button>
+                        @endif
+                      @else
+                          <button onclick="javascript:$('#formadd{{$product->id}}').submit()" class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">в избранное</span></button>
+                      @endif
                       <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">просмотр</span></button>
                     </div>
                   </div>
@@ -83,25 +89,25 @@
           <ul class="hot-deal-countdown">
             <li>
               <div>
-                <h3 class="days"></h3>
+                <h3 id="days"></h3>
                 <span>Дней</span>
               </div>
             </li>
             <li>
               <div>
-                <h3 class="hours"></h3>
+                <h3 id="hours"></h3>
                 <span>Часов</span>
               </div>
             </li>
             <li>
               <div>
-                <h3 class="minutes"></h3>
+                <h3 id="minutes"></h3>
                 <span>Минут</span>
               </div>
             </li>
             <li>
               <div>
-                <h3 class="seconds"></h3>
+                <h3 id="seconds"></h3>
                 <span>Секунд</span>
               </div>
             </li>

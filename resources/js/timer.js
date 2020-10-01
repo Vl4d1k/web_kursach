@@ -1,43 +1,30 @@
-function getTimeRemaining(endtime) {
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor((t / 1000) % 60);
-  var minutes = Math.floor((t / 1000 / 60) % 60);
-  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  var days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
+// The data/time we want to countdown to
+var countDownDate = new Date("Sep 8, 2020 16:00:00").getTime();
+
+// Run myfunc every second
+var myfunc = setInterval(function() {
+
+var now = new Date().getTime();
+var timeleft = countDownDate - now;
+    
+// Calculating the days, hours, minutes and seconds left
+var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+    
+// Result is output to the specific element
+document.getElementById("days").innerHTML = days
+document.getElementById("hours").innerHTML = hours 
+document.getElementById("minutes").innerHTML = minutes  
+document.getElementById("seconds").innerHTML = seconds
+    
+// Display the message when countdown is over
+if (timeleft < 0) {
+    clearInterval(myfunc);
+    document.getElementById("days").innerHTML = "0"
+    document.getElementById("hours").innerHTML = "0" 
+    document.getElementById("minutes").innerHTML = "0"
+    document.getElementById("seconds").innerHTML = "0"
 }
-
-function initializeClock(id, endtime) {
-  var clock = document.getElementById(id);
-  console.log(clock)
-  var daysSpan = clock.querySelector('.days');
-  var hoursSpan = clock.querySelector('.hours');
-  var minutesSpan = clock.querySelector('.minutes');
-  var secondsSpan = clock.querySelector('.seconds');
-
-  function updateClock() {
-    var t = getTimeRemaining(endtime);
-
-    daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-    if (t.total <= 0) {
-      clearInterval(timeinterval);
-    }
-  }
-
-  updateClock();
-  var timeinterval = setInterval(updateClock, 1000);
-}
-
-var deadline="January 04 2020 08:00:00 GMT+0300";
-var deadline = new Date(Date.parse(new Date()) + 6 * 22 * 50 * 60 * 1000);
-initializeClock('countdown', deadline);
+}, 1000);

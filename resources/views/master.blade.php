@@ -27,6 +27,8 @@
   <!-- Custom stlylesheet -->
   <link type="text/css" rel="stylesheet" href="/kursach/public/css/style.css" />
 
+  <script src="/kursach/resources/js/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -109,63 +111,79 @@
               </div>
 
               <div class="dropdown">
-                @if(!isset($order->products))
+                @if(isset($order))
+                  @if(count($order->products) > 0)
 
-                  <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="fa fa-shopping-cart"></i>
-                    <span>Корзина</span>
-                  <div class="qty">0</div>
-                  </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>Корзина</span>
+                      <div class="qty">{{count($order->products)}}</div>
+                    </a>
 
-                  <div class="cart-dropdown">
-                    <div class="cart-list">
-                      Корзина пока еще пустая.
+                    <div class="cart-dropdown">
+                      <div class="cart-list">
+                        @foreach($order->products as $product)
+                          <div class="product-widget">
+                            <div class="product-img">
+                              <img src="{{Storage::url($product->image)}}" alt="">
+                            </div>
+                            <div class="product-body">
+                              <h3 class="product-name"><a href="#">{{$product->name}}</a></h3>
+                              <h4 class="product-price"><span class="qty">X{{$product->pivot->count}}</span>{{$product->price}} ₽</h4>
+                            </div>
+                            <form action="{{ route('basket-remove', $product) }}" method="POST">
+                              <button class="delete"><i class="fa fa-close"></i></button>
+                            @csrf
+                            </form>
+                          </div>
+                        @endforeach
+                      </div>
+
+                    <div class="cart-summary">
+                      <small>{{count($order->products)}} Товар(ов) выбрано</small>
+                      <h5>Стоимость: {{$order->getFullPrice()}} </h5>
                     </div>
-                  </div>
+                    <div class="cart-btns">
+                      <a href="{{route('basket')}}">Оформление заказа <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                    
+                  @else
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>Корзина</span>
+                    <div class="qty">0</div>
+                    </a>
+
+                    <div class="cart-dropdown">
+                      <div class="cart-list">
+                        Корзина пока еще пустая.
+                      </div>
+                    </div>
+
+                  @endif
                   
                 @else
-                  <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="fa fa-shopping-cart"></i>
-                    <span>Корзина</span>
-                    <div class="qty">{{count($order->products)}}</div>
-                  </a>
 
-                  <div class="cart-dropdown">
-                    <div class="cart-list">
-                      @foreach($order->products as $product)
-                        <div class="product-widget">
-                          <div class="product-img">
-                            <img src="{{Storage::url($product->image)}}" alt="">
-                          </div>
-                          <div class="product-body">
-                            <h3 class="product-name"><a href="#">{{$product->name}}</a></h3>
-                            <h4 class="product-price"><span class="qty">X{{$product->pivot->count}}</span>{{$product->price}} ₽</h4>
-                          </div>
-                          <form action="{{ route('basket-remove', $product) }}" method="POST">
-                            <button class="delete"><i class="fa fa-close"></i></button>
-                          @csrf
-                          </form>
-                        </div>
-                      @endforeach
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>Корзина</span>
+                    <div class="qty">0</div>
+                    </a>
+
+                    <div class="cart-dropdown">
+                      <div class="cart-list">
+                        Корзина пока еще пустая.
+                      </div>
                     </div>
 
-                  <div class="cart-summary">
-                    <small>{{count($order->products)}} Товар(ов) выбрано</small>
-                    <h5>Стоимость: {{$order->getFullPrice()}} </h5>
-                  </div>
-                  <div class="cart-btns">
-                    <a href="">Перейти в корзину</a>
-                    <a href="">Оформить заказ<i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-
                 @endif
-
-              <div class="menu-toggle">
-                <a href="#">
-                  <i class="fa fa-bars"></i>
-                  <span>Menu</span>
-                </a>
-              </div>
+            </div>
+            <div class="menu-toggle">
+              <a href="#">
+                <i class="fa fa-bars"></i>
+                <span>Menu</span>
+              </a>
             </div>
           </div>
         </div>
@@ -174,11 +192,12 @@
   </header>
   
   @if(session()->has('success'))
-  <p class="alert alert-success">{{ session()->get('success') }}</p>
+  <p class="alert alert-success text-center" style="margin: 0">{{ session()->get('success') }}</p>
   @endif
   @if(session()->has('warning'))
-  <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+  <p class="alert alert-warning text-center" style="margin: 0">{{ session()->get('warning') }}</p>
   @endif
+
   @yield('content')
   
   <div id="newsletter" class="section">
@@ -271,12 +290,21 @@
     </div>
   </footer>
 
-  <script src="/kursach/resources/js/jquery.min.js"></script>
   <script src="/kursach/resources/js/bootstrap.min.js"></script>
   <script src="/kursach/resources/js/slick.min.js"></script>
   <script src="/kursach/resources/js/nouislider.min.js"></script>
   <script src="/kursach/resources/js/jquery.zoom.min.js"></script>
   <script src="/kursach/resources/js/main.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $(".alert-success").delay(3000).slideUp(300);
+    });
+
+    $(document).ready(function(){
+      $(".alert-warning").delay(3000).slideUp(300);
+    });
+  </script>
 
 </body>
 </html>

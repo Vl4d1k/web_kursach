@@ -50,6 +50,8 @@ Route::middleware(['set_locale'])->group(function () {
   });
   
   Route::get('/', 'MainController@index')->name('index');
+
+  Route::get('/products', 'MainController@allProducts')->name('all-products');
   
   Route::get('/categories', 'MainController@categories')->name('categories');
   
