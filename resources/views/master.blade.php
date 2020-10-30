@@ -27,8 +27,6 @@
   <!-- Custom stlylesheet -->
   <link type="text/css" rel="stylesheet" href="/kursach/public/css/style.css" />
 
-  <script src="/kursach/resources/js/jquery.min.js"></script>
-
 </head>
 
 <body>
@@ -77,7 +75,7 @@
                     <span>Избранное</span>
                   <div class="qty">{{count($wishList->products)}}</div>
                   </a>
-                  <div class="cart-dropdown">
+                  <div class="cart-dropdown" style= "left: 0;">
                     <div class="cart-list">
                       @foreach($wishList->products as $wish)
                         <div class="product-widget">
@@ -96,19 +94,20 @@
                       @endforeach
                     </div>
                   </div>
+                </div>
                 @else
                   <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="fa fa-heart-o"></i>
                     <span>Избранное</span>
                   <div class="qty">0</div>
                   </a>
-                  <div class="cart-dropdown">
+                  <div class="cart-dropdown" style= "left: 0;">
                     <div class="cart-list">
                       В избранном ничего нет.
                     </div>
                   </div>
+                </div>
                 @endif
-              </div>
 
               <div class="dropdown">
                 @if(isset($order))
@@ -139,12 +138,13 @@
                         @endforeach
                       </div>
 
-                    <div class="cart-summary">
-                      <small>{{count($order->products)}} Товар(ов) выбрано</small>
-                      <h5>Стоимость: {{$order->getFullPrice()}} </h5>
-                    </div>
-                    <div class="cart-btns">
-                      <a href="{{route('basket')}}">Оформление заказа <i class="fa fa-arrow-circle-right"></i></a>
+                      <div class="cart-summary">
+                        <small>{{count($order->products)}} Товар(ов) выбрано</small>
+                        <h5>Стоимость: {{$order->getFullPrice()}} </h5>
+                      </div>
+                      <div class="cart-btns">
+                        <a href="{{route('basket')}}">Оформление заказа <i class="fa fa-arrow-circle-right"></i></a>
+                      </div>
                     </div>
                     
                   @else
@@ -168,7 +168,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                       <i class="fa fa-shopping-cart"></i>
                       <span>Корзина</span>
-                    <div class="qty">0</div>
+                      <div class="qty">0</div>
                     </a>
 
                     <div class="cart-dropdown">
@@ -290,6 +290,7 @@
     </div>
   </footer>
 
+  <script src="/kursach/resources/js/jquery.min.js"></script>
   <script src="/kursach/resources/js/bootstrap.min.js"></script>
   <script src="/kursach/resources/js/slick.min.js"></script>
   <script src="/kursach/resources/js/nouislider.min.js"></script>
